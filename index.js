@@ -67,3 +67,61 @@ async function getJokes(num) {
     }
 }
 getJokes(5);
+
+// PART TWO
+//Part 2.1 New Deck
+const deck_url = 'https://deckofcardsapi.com/api/deck/new/';
+
+async function fetchNewDeck() {
+    let response = await fetch(deck_url);
+    let data = await response.json();
+    console.log(`New deck created with ID: ${data.deck_id}`);
+    return deckID = data.deck_id;
+}
+
+// Part 2.2 Draw a Card
+async function drawCard(deckId) {
+    let draw_url = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`;
+    let response = await fetch(draw_url);
+    let data = await response.json();
+    let card = data.cards[0];
+    console.log(`Drew card: ${card.value} of ${card.suit}`);
+    return card;
+}
+
+// Part 2.3 Draw Multiple Cards
+async function drawMultiCards(deckId) {
+    let draw_url = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=5`
+    let response = await fetch(draw_url);
+    let data = await response.json();
+    for (let i = 0; i < data.cards.length; i++) {
+        console.log(`Drew card: ${data.cards[i].value} of ${data.cards[i].suit}`);
+    }
+}
+
+// Part 2.4 Shuffle and Re-Draw
+async function shuffleDraw2(deckId) {
+    let shuffle_url = `https://deckofcardsapi.com/api/deck/${deckId}/shuffle/`;
+    let response = await fetch(shuffle_url);
+    let data = await response.json();
+    for (let i = 0; i < 2; i++) {
+        drawCard(deckId);
+    }
+}
+
+// Part 2.5 Array of Cards
+async function shuffle(deckID) {
+    let shuffle_url = `https://deckofcardsapi.com/api/deck/${deckID}/shuffle/`;
+    let response = await fetch(shuffle_url);
+    let data = await response.json();
+}
+
+async function drawRandomCards(deckID, count) {
+    let cards = [];
+    shuffle(deckID);
+    for (let i = 0; i < count; i++) {
+        let card = await drawCard(deckID);
+        cards.push(card);
+    }
+    console.log(cards);
+}
